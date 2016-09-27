@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html ng-app="report">
+  <head>
+    <title>Team Report</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <base href="/" />
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.2/outdatedbrowser.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="/static/public/assets/report.min.css">
+    <!-- <link rel="stylesheet" href="http://localhost:8889/report.min.css"> -->
+  </head>
+  <body layout="column" md-theme="default" class="report">
+    <div class="page-loading-mask" layout="row" layout-align="center center" ng-hide="pageLoaded">
+      <div class="sk-three-bounce">
+        <div class="sk-child sk-bounce1"></div>
+        <div class="sk-child sk-bounce2"></div>
+        <div class="sk-child sk-bounce3"></div>
+      </div>
+    </div>
+
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+      <div layout-fill layout="column" ng-controller="MainNavController as nav">
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <span>Team Report</span>
+            <span flex></span>
+            <md-button ng-click="nav.close()" class="md-primary">
+              <i class="fa fa-close"></i>
+            </md-button>
+          </div>
+        </md-toolbar>
+
+        <md-content flex>
+          <md-list class="menu">
+            <md-list-item class="menu-item"
+                          ng-click="nav.go( 'home' )"
+                          ui-sref="home"
+                          ui-sref-active="active">
+              <p>Home</p>
+            </md-list-item>
+
+            <md-list-item ng-show="nav.fSession.isLoggedIn()"
+                          class="menu-item"
+                          ui-sref="dashboard"
+                          ui-sref-active="active"
+                          ng-click="nav.go( 'dashboard' )">
+              <p>Reports</p>
+            </md-list-item>
+
+            <md-list-item ng-hide="nav.fSession.isLoggedIn()"
+                          class="menu-item"
+                          ui-sref="login"
+                          ng-click="nav.go( 'login' )"
+                          ui-sref-active="active">
+              <p>Login</p>
+            </md-list-item>
+
+            <md-list-item ng-show="nav.fSession.isLoggedIn()"
+                          class="menu-item"
+                          ui-sref="login"
+                          ng-click="nav.logout()"
+                          ui-sref-active="active">
+              <p>Logout</p>
+            </md-list-item>
+
+            <md-list-item ng-show="nav.fSession.isLoggedIn()"
+                          class="menu-item"
+                          ui-sref="account.profile"
+                          ui-sref-active="active"
+                          ui-sref-active="active"
+                          ng-click="nav.go( 'account.profile' )">
+              <p>My Profile</p>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </div>
+    </md-sidenav>
+
+    <div ui-view layout="column" layout-fill flex>
+    </div>
+
+    <div id="outdated">
+      <h6>Your browser is out-of-date!</h6>
+      <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+      <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.2/outdatedbrowser.min.js"></script>
+    <script>
+      function ready(fn) {
+        if (document.readyState != 'loading'){
+          fn();
+        } else if (document.addEventListener) {
+          document.addEventListener('DOMContentLoaded', fn);
+        } else {
+          document.attachEvent('onreadystatechange', function() {
+            if (document.readyState != 'loading')
+              fn();
+          });
+        }
+      }
+
+      ready(function () {
+        outdatedBrowser({
+          bgColor: '#f25648',
+          color: '#ffffff',
+          lowerThan: 'IE11',
+          languagePath: ''
+        });
+      });
+    </script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-aria.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-cookies.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-messages.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.7.2/angular-scroll.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-xeditable/0.1.9/js/xeditable.min.js"></script>
+
+    <script src="//cdn.jsdelivr.net/satellizer/0.14.0/satellizer.min.js"></script>
+
+		<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+    <!-- report Scripts -->
+    <script type="text/javascript" src="/static/public/assets/report.min.js"></script>
+    <!-- <script type="text/javascript" src="http://localhost:8889/report.min.js"></script> -->
+  </body>
+</html>
+
