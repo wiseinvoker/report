@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+
+  db:
+    image: mysql:5.6
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: reportdb
+      MYSQL_USER: reportuser
+      MYSQL_PASSWORD: 1VWx3WhA53BeglcS
+     
+
+  web:
+    # Docker hack to wait until Postgres is up, then run stuff.
+    command: python manage.py runserver 0.0.0.0:8000
+    image: django
+    build: .
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+    restart: always
+    environment:
+      IN_DOCKER: 1
+
+  webserver:
+    image: jumanjiman/caddy
+    depends_on:
+      - web
+    ports:
+      - "5000:8000"
+    command: -port 8000 -host 0.0.0.0 "proxy / web:8000 { }"
+
+
+volumes:
+    db_data:
